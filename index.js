@@ -1,6 +1,8 @@
 const express = require("express");
+const path = require("path");
 const { connectToMongoDB } = require("./connect");
 const urlRoute = require("./routes/url");
+const staticRoute = require("./routes/staticRouter");
 const URL = require("./models/url");
 
 const app = express();
@@ -12,19 +14,29 @@ connectToMongoDB("mongodb://localhost:27017/short-url").then(() =>
   console.log("Mongodb connected")
 );
 //middleware
-app.use(express.json());
+
+app.set("view engine", "ejs"); // setting template engine
+app.set("views", path.resolve("./views"));
+
+app.use(express.json()); // for the body
+app.use(express.urlencoded({ extended: false }));
+
+//routes
 
 app.use("/url", urlRoute);
 
-//routes
-app.get("/:shortId", async (req, res) => {
+app.use("/", staticRoute);
+
+app.get("/url/:shortId", async (req, res) => {
   const shortId = req.params.shortId;
   const entry = await URL.findOneAndUpdate(
+    //findOneAndUpdate is a mongoose method used to locate a document with a matching shortId and update it
     {
-      shortId,
+      shortId, //to find it we have to assign a shortid
     },
     {
       $push: {
+        //update we are pushing it coz visitHistory is an array
         visitHistory: {
           timestamp: Date.now(),
         },

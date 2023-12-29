@@ -11,9 +11,9 @@ const urlSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    visitHistory: [{ timestamp: { type: Number } }],
+    visitHistory: [{ timestamp: { type: Number } }], // total clicks (is an array which has the timestamp)
   },
-  { timestamps: true }
+  { timestamps: true } // it will show at what time the entry has been created
 );
 
 const URL = mongoose.model("url", urlSchema);
