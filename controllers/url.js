@@ -7,10 +7,11 @@ async function handleGenerateNewShortURL(req, res) {
   const shortID = shortid();
 
   await URL.create({
-    // creating a new URL in the database
+    // creating a new URL in the database (i.e. it will first talk to the model then the model will create a new URL in the database)
     shortId: shortID,
     redirectURL: body.url,
     visitHistory: [],
+    createdBy: req.user._id, // this user is from middleware(req.user)
   });
   return res.render("home", {
     id: shortID,
