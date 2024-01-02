@@ -11,13 +11,13 @@ const urlSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    visitHistory: [{ timestamp: { type: Number } }], // total clicks (is an array which has the timestamp)
+    visitHistory: [{ timestamp: { type: Number } }],
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "users",
     },
   },
-  { timestamps: true } // it will show at what time the entry has been created
+  { timestamps: true }
 );
 
 const URL = mongoose.model("url", urlSchema);
