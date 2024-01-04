@@ -21,9 +21,14 @@ async function handleUserLogin(req, res) {
       error: "Invalid Username or Password",
     });
 
-  const sessionId = uuidv4();
-  setUser(sessionId, user);
-  res.cookie("uid", sessionId);
+  //   const sessionId = uuidv4();
+  //   setUser(sessionId, user);
+  //   res.cookie("uid", sessionId);
+  const token = setUser(user); //this token is sent to the service in auth.js
+  // we are using setUser to create JWT
+
+  res.cookie("uid", token);
+
   return res.redirect("/");
 }
 
